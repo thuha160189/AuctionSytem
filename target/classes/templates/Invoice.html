@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<title>Order invoice</title>
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="mx-auto w-50 mt-5">
+                <h3>Invoice</h3>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Invoice#:</td>
+                        <td th:text="${invoice.invoiceId}">id</td>
+                    </tr>
+                    <tr>
+                        <td>Date:</td>
+                        <td th:text="${invoice.invoiceDate}">100.0</td>
+                    </tr>
+                    <tr>
+                        <td>product name:</td>
+                        <td th:text="${invoice.auctionId}">name</td>
+                    </tr>
+                    <tr>
+                        <td>product price:</td>
+                        <td th:text="${invoice.amount}">100.0</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+                <h4>Shipping information</h4>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Name:</td>
+                        <td th:text="${user.firstName}+' '+${user.lastName}">John Doe</td>
+                    </tr>
+                    <tr>
+                        <td>Street:</td>
+                        <td th:if="${user.address!=null}"><span th:text="${user.address.street}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>City:</td>
+                        <td th:if="${user.address!=null}"><span th:text="${user.address.city}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>State:</td>
+                        <td th:if="${user.address!=null}"><span th:text="${user.address.state}"></span></td>
+                    </tr>
+                    <tr>
+                        <td>Zip:</td>
+                        <td th:if="${user.address!=null}"><span th:text="${user.address.zip}"></span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-success active" th:href="@{'/auction'}">Go Home</a>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

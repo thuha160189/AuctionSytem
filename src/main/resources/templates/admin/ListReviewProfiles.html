@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Neptune Auction System - Pending Profile List</title>
+    <link rel = "icon" th:href="@{/images/neptune.ico}">
+</head>
+<body>
+<section>
+    <a href="/">Back to Home</a>
+</section>
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4">Profiles</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="${'/admin'}">Admin</a></li>
+                    <li class="breadcrumb-item active">Profile Review</li>
+                </ol>
+                <div class="card mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <div class="alert-danger">
+                        <span th:text="${error}">ID</span>
+                        </div>
+                        <table cellspacing="0" class="table table-bordered" id="dataTable"
+                               th:if="${not #lists.isEmpty(users)}" width="100%">
+                            <thead>
+                            <tr>
+                                <th> Profile ID </th>
+                                <th> Username </th>
+                                <th> Email </th>
+                                <th> First Name</th>
+                                <th> Last Name</th>
+                                <th> License Number</th>
+                                <th> Status</th>
+                                <th> Actions </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user : ${users}">
+                                <td><span th:text="${user.userId}"> Profile ID </span></td>
+                                <td><span th:text="${user.username}"> Username </span></td>
+                                <td><span th:text="${user.email}"> Email </span></td>
+                                <td><span th:text="${user.firstName}"> First Name </span></td>
+                                <td><span th:text="${user.lastName}"> Last Name </span></td>
+                                <td><span th:text="${user.licenseNumber}"> License Number </span></td>
+                                <td><span th:text="${user.profileVerificationType}"> Status </span></td>
+                                <td>
+                                    <div th:switch="${user.profileVerificationType}">
+                                    <a th:case="${T(edu.miu.cs.neptune.domain.ProfileVerificationType).NEED_TO_VERIFY}"
+                                            class="edit" th:href="@{/admin/profile/verify/{userId}(userId=${user.userId})}">
+                                        <i class="material-icons" data-toggle="tooltip"
+                                           title="Verify">visibility</i></a>
+                                    <a th:case="${T(edu.miu.cs.neptune.domain.ProfileVerificationType).FAILED}"
+                                            class="edit" th:href="@{/admin/profile/verify/{userId}(userId=${user.userId})}">
+                                        <i class="material-icons" data-toggle="tooltip"
+                                           title="Re-Verify">published_with_changes</i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

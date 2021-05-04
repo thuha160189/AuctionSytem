@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<title>Neptune Auction System</title>
+<link rel = "icon" th:href="@{/images/neptune.ico}">
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4">Categories</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="${'/customer/products'}">Home</a></li>
+                    <li class="breadcrumb-item active">Category List</li>
+                </ol>
+                <div class="table-title" sec:authorize="hasAuthority('BUYER')">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h2></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="table table-bordered" id="dataTable"
+                                   th:if="${not #lists.isEmpty(categories)}" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>Category ID</th>
+                                    <th>Category Name</th>
+                                    <th>Category Description</th>
+                                    <th>Products</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>Category ID</th>
+                                    <th>Category Name</th>
+                                    <th>Category Description</th>
+                                    <th>Products</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:each="category : ${categories}">
+                                    <td th:text="${category.categoryId}">Tiger Nixon</td>
+                                    <td th:text="${category.categoryName}">System Architect</td>
+                                    <td th:text="${category.categoryDescription}">Edinburgh</td>
+                                    <td><a th:href="@{/customer/category/products(id=${category.categoryId})}" class="btn ui-state-default">View Products</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

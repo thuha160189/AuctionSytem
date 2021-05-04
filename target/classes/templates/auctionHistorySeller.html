@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<title>Neptune Auction System</title>
+<link rel = "icon" th:href="@{/images/neptune.ico}">
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main class="mx-2 my-5">
+            <h3 class="display-5 text-center">List of Auctions</h3>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Duration</label>
+                <select class="form-control input-sm w-25" id="exampleFormControlSelect1">
+                    <option value="30">last 1 month</option>
+                    <option value="60">last 2 months</option>
+                    <option value="90">last 3 months</option>
+                </select>
+            </div>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width:5%" scope="col">#</th>
+                    <th style="width:15%" scope="col">Product</th>
+                    <th style="width:20%" scope="col">Auction BeginDate</th>
+                    <th style="width:20%" scope="col">Auction Deadline</th>
+                    <th style="width:10%" scope="col">Status</th>
+                    <th style="width:20%" scope="col">Payment Due Date</th>
+                    <th style="width:10%" scope="col">Action</th>
+                </tr>
+                <tr th:each="auction: ${auctions}">
+                    <th scope="row" th:text="${auctionStat.index+1}"/>
+                    <td><a th:href="@{'/auction/' + ${auction.auctionId}}"> <span th:text="${auction.product.productName}">error</span></a> </td>
+                    <td th:text="${#temporals.format(auction.beginDate, 'yyyy-MM-dd HH:mm:ss')}" />
+                    <td th:text="${#temporals.format(auction.endDate, 'yyyy-MM-dd HH:mm:ss')}" />
+                    <td th:text="${auction.AuctionStatus}"></td>
+                    <td>
+                        <div th:if="${auction.product.paymentDueDate!=null}">
+                            <span th:text="${#temporals.format(auction.product.paymentDueDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div th:if="${auction.product.productStatus!=T(edu.miu.cs.neptune.domain.ProductStatus).PRODUCT_SOLD and auction.AuctionStatus==T(edu.miu.cs.neptune.domain.AuctionStatus).ENDED}">
+                            <span>Payment pending</span>
+                        </div>
+                        <div th:if="${auction.product.productStatus==T(edu.miu.cs.neptune.domain.ProductStatus).PRODUCT_SOLD}">
+                            <span>Payment complete</span>
+                            <div th:if="${auction.shippingStatus == null}">
+                                <a th:href="@{'/auction/ship?auctionId='+${auction.auctionId}}">Ship Now</a>
+                            </div>
+                            <div th:unless="${auction.shippingStatus == null}">
+                                <span th:text="${auction.shippingStatus}"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

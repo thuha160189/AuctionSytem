@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Neptune Auction System - Category</title>
+    <link rel = "icon" th:href="@{/images/neptune.ico}">
+</head>
+<body>
+    <th:block th:insert="fragments/head_crud"></th:block>
+    <body class="sb-nav-fixed">
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+    <div id="layoutSidenav">
+        <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Categories</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a th:href="${'/admin'}">Admin</a></li>
+                        <li class="breadcrumb-item"><a th:href="${'/admin/categories'}">Categories</a></li>
+                        <li class="breadcrumb-item active">Add</li>
+                    </ol>
+                    <form action="#" th:action="@{/admin/categories/save}" th:object="${category}" method="post">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add Category</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert-danger">
+                            <span th:text="${error}" >ID</span>
+                            <ul th:if="${#fields.hasErrors('*')}">
+                                <li th:each="err : ${#fields.errors('*')}" th:text="${err}" >Input is incorrect</li>
+                            </ul>
+                            </div>
+                            <div class="form-group">
+<!--                            <label for="id"><span th:text="#{category.form.categoryId}">ID: </span></label>-->
+<!--                                <input type="text" id="id" th:field="*{categoryId}" />-->
+<!--                            <p th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}" th:errorclass="fieldError">Incorrect date</p>-->
+                            </div>
+                            <div class="form-group">
+                                <label for="name"><span th:text="#{category.form.categoryName}">Name: </span></label>
+                                <input class="form-control" type="text" id="name" th:field="*{categoryName}" />
+<!--                            <p th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}" th:errorclass="fieldError">Incorrect date</p>-->
+                            </div>
+                            <div class="form-group">
+                                <label for="description"><span th:text="#{category.form.categoryDescription}">Name: </span></label>
+                                <input class="form-control" type="text" id="description" th:field="*{categoryDescription}" />
+<!--                                <p th:if="${#fields.hasErrors('categoryDescription')}" th:errors="*{categoryDescription}" th:errorclass="fieldError">Incorrect date</p>-->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+<!--                                <input id="reset" type="reset" tabindex="4">-->
+                            <input class="btn btn-success" id="submit" type="submit" tabindex="5" value="Add Category">
+                        </div>
+                    </form>
+                </div>
+            </main>
+            <th:block th:insert="fragments/footer :: footer"></th:block>
+        </div>
+    </div>
+    <th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

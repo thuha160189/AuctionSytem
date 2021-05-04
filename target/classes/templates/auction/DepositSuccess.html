@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Neptune Auction System - Invoice Detail</title>
+    <link rel = "icon" th:href="@{/images/neptune.ico}">
+</head>
+<body>
+<section>
+    <a href="/">Back to Home</a>
+</section>
+<th:block th:insert="fragments/head_crud"></th:block>
+<div class="sb-nav-fixed">
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+    <div id="layoutSidenav">
+        <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid">
+                    <h1 class="mt-4">Invoice Detail</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a th:href="${'/auction/activeAuctions'}">Active Auctions</a></li>
+                        <li class="breadcrumb-item active" >Invoice</li>
+                    </ol>
+                    <div class="card text-center">
+                        <div class="card-header">Deposited Successfully</div>
+                        <div class="card-body">
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    Auction Id
+                                </div>
+                                <div class="col-sm-5" th:text="${auctionOrder.auctionId}"></div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    Product
+                                </div>
+                                <div class="col-sm-5" th:text="${auctionOrder.description}"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    Deposit Amount
+                                </div>
+                                <div class="col-sm-5" th:text="${auctionOrder.price}"></div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-success active" th:href="@{'/auction/auction?id=' + ${auctionOrder.auctionId}}">Make a Bid</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+            <th:block th:insert="fragments/footer :: footer"></th:block>
+        </div>
+    </div>
+    <th:block th:insert="fragments/scripts"></th:block>
+</div>
+</body>
+</html>

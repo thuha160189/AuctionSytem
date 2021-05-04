@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<title>Neptune Auction System</title>
+<link rel = "icon" th:href="@{/images/neptune.ico}">
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="mx-auto w-50">
+                <form th:action="@{/auction/pay}" th:object="${auctionOrder}"
+                      method="post">
+                    <fieldset>
+                        <legend>Please review the information</legend>
+                        <div class="font-weight-bold">Product details:</div>
+                        <div class="form-group mx-5">
+                            <label for="description">Product: </label>
+                            <input type="text" class="form-control" id="description" name="description" readonly th:field="*{description}" tabindex="1">
+                        </div>
+                        <div class="form-group mx-5">
+                            <label for="price">Price: </label>
+                            <input type="text" class="form-control" id="price" name="price" readonly th:field="*{price}" tabindex="1">
+                        </div>
+
+                        <div class="font-weight-bold">Buyer info:</div>
+                        <div class="form-group mx-5">
+                            <label for="firstName">firstName: </label>
+                            <input type="text" class="form-control" id="firstName" name="user.firstName" readonly th:field="*{user.firstName}" tabindex="1">
+                        </div>
+                        <div class="form-group mx-5">
+                            <label for="lastName">Last Name: </label>
+                            <input type="text" class="form-control" id="lastName" name="user.lastName" readonly th:field="*{user.lastName}" tabindex="2">
+                        </div>
+                        <div class="form-group mx-5">
+                            <label for="email">Email: </label>
+                            <input type="text" class="form-control" id="email" name="user.email" readonly th:field="*{user.email}" tabindex="2">
+                        </div>
+                        <div class="font-weight-bold">Address:</div>
+                        <div class="form-group mx-5">
+                            <label for="street">Street: </label>
+
+                            <input type="text" class="form-control" id="street" name="user.address.street" th:field="*{user.address.street}" tabindex="4">
+                        </div>
+                        <div class="form-group mx-5">
+                            <label for="city">City: </label>
+                            <input type="text" class="form-control" id="city" name="user.address.city" th:field="*{user.address.city}" tabindex="5">
+                        </div>
+                        <div class="form-group mx-5">
+                            <label for="state">State: </label>
+                            <input type="text" class="form-control" id="state" name="user.address.state" th:field="*{user.address.state}" tabindex="6">
+                        </div>
+                        <div class="form-group mx-5">
+                            <label for="zip">Zip: </label>
+                            <input type="text" class="form-control" id="zip" name="user.address.number" th:field="*{user.address.zip}" tabindex="7">
+                        </div>
+                        <input type="hidden" name="user.userId" th:field="*{user.UserId}" id="userId">
+                        <input type="hidden" name="auctionId" th:field="*{auctionId}" id="auctionId">
+                        <input class="btn btn-primary btn=block" id="submit" type="submit" tabindex="8" value="Pay">
+
+                    </fieldset>
+                </form>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

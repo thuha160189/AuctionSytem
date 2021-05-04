@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Category</title>
+</head>
+<body>
+<section>
+    <a href="/">Back to Home</a>
+</section>
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4">Products</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="${'/product'}">Seller</a></li>
+                    <li class="breadcrumb-item"><a th:href="${'/product/all'}">Products</a></li>
+                    <li class="breadcrumb-item active">Add</li>
+                </ol>
+                <form action="#" th:action="@{/product/saveProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Product</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert-danger">
+                        <ul th:if="${#fields.hasErrors('*')}">
+                            <li th:each="err : ${#fields.errors('*')}" th:text="${err}" >Input is incorrect</li>
+                        </ul>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" th:field="*{productId}"  />
+                            <input type="hidden" th:field="*{auction.auctionId}"  />
+                            <input type="hidden" th:field="*{productStatus}"  />
+                            <input type="hidden" th:field="*{categoryId}"  />
+                            <input type="hidden" th:field="*{paymentDueDate}"  />
+
+                            <label for="id">Name: </span></label>
+                            <input class="form-control" type="text" id="id" th:field="*{productName}" th:disabled="${disabled}" />
+                            <p th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" th:errorclass="fieldError">Incorrect name</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Price</label>
+                            <input class="form-control" type="number" id="name" th:field="*{productPrice}" th:disabled="${disabled}" />
+                            <p th:if="${#fields.hasErrors('productPrice')}" th:errors="*{productPrice}" th:errorclass="fieldError">Incorrect price</p><div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" th:field="*{productDescription}" th:disabled="${disabled}" />
+                        </div>
+                            <div class="form-group">
+                                <label for="categories">Categories </label>
+                                <select class="form-control" id="categories" name="categories"  multiple="multiple" th:disabled="${disabled}">
+                                    <option th:each="category: ${categories}"
+                                            th:value="${category.categoryId}"
+                                            th:text="${category.categoryName}"
+                                            th:selected="${product.categories.contains(category)}">
+                                    </option>
+                                </select>
+                            </div>
+                        <div class="form-group">
+                            <label for="productState">State</label>: <span id="productState" th:text="*{productState}" />
+                        </div>
+                            <div class="form-group">
+                                <label>Images</label><br>
+                                <span th:each="image : ${product.dbImages}">
+<!--                                    <span th:text="${product.dbImages.size()}"></span>-->
+                                    <img th:src="@{'/ProductImages/' + ${image.name}}" width="150px" height="150px"/>
+                                    <input type="hidden" th:field="*{dbImages[__${imageStat.index}__].id}" />
+                                    <input type="hidden" th:field="*{dbImages[__${imageStat.index}__].name}" />
+                                </span>
+<!--                                <input type="text" id="dbImages" name="dbImages" th:field="*{dbImages}" hidden />-->
+
+                                <input class="form-control" type="file" multiple="multiple" th:field="*{images}" accept="image/png, image/jpeg">
+                            </div>
+                            <fieldset>
+                                <legend>Auction Information</legend>
+                                <div class="form-group">
+                                    <label for="beginDate">Begin Date</label>
+                                    <input class="form-control" type="datetime-local" id="beginDate" th:field="*{auction.beginDate}" th:disabled="${disabled}" />
+                                    <p th:if="${#fields.hasErrors('auction.beginDate')}" th:errors="*{auction.beginDate}" th:errorclass="fieldError">Incorrect Date</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="endDate">End Date</label>
+                                    <input class="form-control" type="datetime-local" id="endDate" th:field="*{auction.endDate}" th:disabled="${disabled}" />
+                                    <p th:if="${#fields.hasErrors('auction.endDate')}" th:errors="*{auction.endDate}" th:errorclass="fieldError">Incorrect Date</p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="beginPrice">Begin Price </label>
+                                    <input class="form-control" type="number" id="beginPrice" th:field="*{auction.beginPrice}" th:disabled="${disabled}" />
+                                    <p th:if="${#fields.hasErrors('auction.beginPrice')}" th:errors="*{auction.beginPrice}" th:errorclass="fieldError">Incorrect Price</p>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!--                            <input id="reset" type="reset" tabindex="4">-->
+                        <input class="btn btn-success" name="action" type="submit" tabindex="5" value="Save Without Release" th:disabled="${disabled}">
+                        <input class="btn btn-success" name="action" type="submit" tabindex="5" value="Save And Release" th:disabled="${disabled}">
+                    </div>
+                </form>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

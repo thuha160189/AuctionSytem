@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org/">
+    <head>
+        <meta charset="UTF-8">
+        <title>Neptune Auction System - Active Auction List</title>
+        <link rel = "icon" th:href="@{/images/neptune.ico}">
+    </head>
+    <body>
+        <section>
+            <a href="/">Back to Home</a>
+        </section>
+        <th:block th:insert="fragments/head_crud"></th:block>
+        <div class="sb-nav-fixed">
+            <th:block th:insert="fragments/navbar :: navbar"></th:block>
+            <div id="layoutSidenav">
+                <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+                <div id="layoutSidenav_content">
+                    <main>
+                        <div class="container-fluid">
+                            <h1 class="mt-4">Active Auctions</h1>
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table cellspacing="0" class="table table-bordered" id="dataTable"
+                                               th:if="${not #lists.isEmpty(activeAuctions)}" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th> Product ID </th>
+                                                <th> Product Name </th>
+                                                <th>Seller</th>
+                                                <th> Auction ID</th>
+                                                <th> Start Date</th>
+                                                <th> End Date</th>
+                                                <th> Begin Price</th>
+                                                <th> Actions </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="auction : ${activeAuctions}" th:object="${auction}">
+                                                <td><span th:text="*{product.getProductId()}"> Product ID </span></td>
+                                                <td><span th:text="*{product.getProductName()}"> Product Name </span></td>
+                                                <td><a th:href="@{#}" class="btn ui-state-default"><span th:text="*{product.getSeller().getUsername()}"> Seller </span></a></td>
+                                                <td><span th:text="*{auctionId}"> Auction ID </span></td>
+                                                <td><span th:text="*{{beginDate}}"> Start Date </span></td>
+                                                <td><span th:text="*{{endDate}}"> End Date </span></td>
+                                                <td><span th:text="*{#numbers.formatCurrency(beginPrice)}"> Begin Price </span></td>
+                                                <td>
+                                                    <a th:href="@{/auction/auction(id=*{auctionId})}" class="btn ui-state-default"><span>Details</span></a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                    <th:block th:insert="fragments/footer :: footer"></th:block>
+                </div>
+            </div>
+            <th:block th:insert="fragments/scripts"></th:block>
+        </div>
+    </body>
+</html>

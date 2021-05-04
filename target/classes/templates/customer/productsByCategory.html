@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<title>Neptune Auction System</title>
+<link rel = "icon" th:href="@{/images/neptune.ico}">
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4">Products</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="${'/customer/products'}">Home</a></li>
+                    <li class="breadcrumb-item active">Product List</li>
+                </ol>
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h2></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="table table-bordered" id="dataTable" >
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <a th:href="@{'/customer/category/productsSort/' +${currentPage} + '?sortField=productId&sortDir=' + ${reverseSortDir} +'&categoryId='+ ${categoryId}}" >Product ID</a>
+                                    </th>
+                                    <th>
+                                        <a th:href="@{'/customer/category/productsSort/'+${currentPage} + '?sortField=productName&sortDir=' + ${reverseSortDir} +'&categoryId='+ ${categoryId}}" >Product Name</a>
+                                    </th>
+                                    <th>
+                                        <a th:href="@{'/customer/category/productsSort/'+ ${currentPage} + '?sortField=productDescription&sortDir=' + ${reverseSortDir} +'&categoryId='+ ${categoryId}}" >Product Description</a>
+                                    </th>
+
+                                    <th>
+                                        <a th:href="@{'/customer/category/productsSort/'+${currentPage} + '?sortField=productPrice&sortDir=' + ${reverseSortDir} +'&categoryId='+ ${categoryId}}"  >Price</a>
+                                    </th>
+                                    <th>
+                                        <a th:href="@{'/customer/category/productsSort/'+${currentPage} + '?sortField=uploadDate&sortDir=' + ${reverseSortDir}+'&categoryId='+ ${categoryId}}" >Uploaded Date</a>
+                                    </th>
+
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+
+                                <tbody id="row">
+                                <tr  th:each="product : ${products}">
+                                    <td th:text="${product.productId}"></td>
+                                    <td th:text="${product.productName}">System Architect</td>
+                                    <td th:text="${product.productDescription}">Edinburgh</td>
+                                    <!--                                    <td th:text="${product.imageList}">Edinburgh</td>-->
+                                    <td th:text="${product.productPrice}">Edinburgh</td>
+                                    <td th:text="${product.uploadDate}">Edinburgh</td>
+                                    <td><a th:href="@{/customer/product(id=${product.productId})}" class="btn ui-state-default">View Product Details</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <form id="nextPage" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                                <div class="input-group">
+                                    <input name="currentPage" type="text" th:value="${currentPage} + 1" hidden/>
+                                    <input name="sortField" type="text" th:value="${sortField}" hidden/>
+                                    <input name="sortDir" type="text" th:value="${sortDir}" hidden/>
+                                    <input id="categoryId" name="categoryId" type="text" th:value="${categoryId}" hidden/>
+                                    <!--                <input name="param" hidden th:value="${currentPage}" type="text"/>-->
+                                </div>
+                            </form>
+                            <div>&nbsp;</div>
+                            <div><i>Sorted by [[${sortField}]] in [[${sortDir}]] order</i></div>
+                            <div>&nbsp;</div>
+                            <div th:if="${totalPages > 1}">
+                                Total Items: [[${totalItems}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+<th:block th:insert="fragments/scripts_pro"></th:block>
+<script type="text/javascript">
+    function clearSearch() {
+        window.location = "[[@{/customer/products}]]";
+    }
+    function triggerNext(){
+        $("#next").click();
+    }
+</script>
+
+</body>
+</html>

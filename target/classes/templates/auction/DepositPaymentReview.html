@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Neptune Auction System - Deposit Payment Review</title>
+    <link rel = "icon" th:href="@{/images/neptune.ico}">
+</head>
+<body>
+<section>
+    <a href="/">Back to Home</a>
+</section>
+<th:block th:insert="fragments/head_crud"></th:block>
+<div class="sb-nav-fixed">
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+    <div id="layoutSidenav">
+        <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid" th:object="${auctionOrder}">
+                    <h1 class="mt-4" th:text="'Deposit payment review for Auction ' + *{auctionId}">Deposit Payment Review</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a th:href="@{'/auction/auction?id=' + ${auctionOrder.auctionId}}">Auction Detail</a></li>
+                        <li class="breadcrumb-item active">Deposit Review</li>
+                    </ol>
+                    <form action="#" th:action="@{/auction/deposit}" method="post">
+                        <div class="card">
+                            <div class="card-header justify-content-center">Auction information</div>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        Auction Id
+                                    </div>
+                                    <div class="col-sm-5" th:text="*{auctionId}">
+                                        <input type="hidden" th:field="*{auctionId}" th:value="*{auctionId}" />
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        Product
+                                    </div>
+                                    <div class="col-sm-5" th:text="*{description}">
+
+                                    </div>
+                                    <input type="hidden" th:field="*{description}" name="description" />
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        Start Date
+                                    </div>
+                                    <div class="col-sm-5" th:text="${auction.beginPrice}"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        End Date
+                                    </div>
+                                    <div class="col-sm-5" th:text="${auction.endDate}"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        Seller Id
+                                    </div>
+                                    <div class="col-sm-5" th:text="${auction.product.seller.username}"></div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        Deposit Amount
+                                    </div>
+                                    <div class="col-sm-5" th:text="${#numbers.formatCurrency(auction.depositAmount)}">
+                                    </div>
+                                    <input type="hidden" name="price" th:field="*{price}" />
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <div class="card-header">User information</div>
+                            <div class="card-body">
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label for="firstName">First Name</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="firstName" name="user.firstName" readonly th:field="*{user.firstName}" tabindex="1">
+                                    </div>
+
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label for="lastName">Last Name</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="lastName" name="user.lastName" readonly th:field="*{user.lastName}" tabindex="2">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label for="email">Email</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="email" name="user.email" readonly th:field="*{user.email}" tabindex="2">
+                                    </div>
+                                </div>
+                                <div class="font-weight-bold">Address</div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label for="street">Street</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="street" name="user.address.street" th:field="*{user.address.street}" tabindex="4">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label for="city">City</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="city" name="user.address.city" th:field="*{user.address.city}" tabindex="5">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label for="state">State</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="state" name="user.address.state" th:field="*{user.address.state}" tabindex="6">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-3">
+                                        <label for="zip">Zip</label>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" id="zip" name="user.address.number" th:field="*{user.address.zip}" tabindex="7">
+                                    </div>
+                                </div>
+                                <input type="hidden" name="user.userId" th:field="*{user.userId}" id="userId">
+                                <input type="hidden" name="auctionId" th:field="*{auctionId}" id="auctionId">
+                            </div>
+                            <div class="row card-footer justify-content-center">
+                                <input class="btn btn-primary" id="submit" type="submit" tabindex="8" value="Confirm and Pay">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+            <th:block th:insert="fragments/footer :: footer"></th:block>
+        </div>
+    </div>
+    <th:block th:insert="fragments/scripts"></th:block>
+</div>
+</body>
+</html>

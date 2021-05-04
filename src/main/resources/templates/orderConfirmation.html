@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<title>Order Confirmation</title>
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="mx-auto w-50 mt-5">
+                <h3>Payment Confirmation</h3>
+                <h4>Product Information</h4>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Product:</td>
+                        <td th:text="${auctionOrder.description}">product</td>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td th:text="${auctionOrder.price}">100.0</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h4>Shipping information</h4>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Name:</td>
+                        <td th:text="${auctionOrder.user.firstName}+' '+${auctionOrder.user.lastName}">John Doe</td>
+                    </tr>
+                    <tr>
+                        <td>Street:</td>
+                        <td th:text="${auctionOrder.user.address.street}">street</td>
+                    </tr>
+                    <tr>
+                        <td>City:</td>
+                        <td th:text="${auctionOrder.user.address.city}">city</td>
+                    </tr>
+                    <tr>
+                        <td>State:</td>
+                        <td th:text="${auctionOrder.user.address.state}">state</td>
+                    </tr>
+                    <tr>
+                        <td>Zip:</td>
+                        <td th:text="${auctionOrder.user.address.zip}">zip</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a class="btn btn-success active" th:href="@{'/auction'}">Go Home</a>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

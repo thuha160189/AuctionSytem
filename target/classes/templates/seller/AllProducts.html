@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"  xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>List all Products</title>
+</head>
+<body>
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <h1 class="mt-4">Products</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="${'/seller'}">Seller</a></li>
+                    <li class="breadcrumb-item active">Product</li>
+                </ol>
+                <!--                <div class="table-title" sec:authorize="hasAuthority('ADMIN')">-->
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <h2></h2>
+                        </div>
+                        <div class="col-sm-3">
+                            <a class="btn btn-success" th:href="@{/product/createProduct}"><i class="material-icons">&#xE147;</i>
+                                <span>Add Product</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div class="alert-danger">
+                                <span th:text="${error}">ID</span>
+                            </div>
+                            <table cellspacing="0" class="table table-bordered" id="dataTable"
+                                   th:if="${not #lists.isEmpty(products)}" width="100%">
+                                <thead>
+                                <tr>
+                                    <th> Product ID </th>
+                                    <th> Name </th>
+                                    <th> Begin date </th>
+                                    <th> End date </th>
+                                    <th> Price </th>
+                                    <th> Begin Price </th>
+                                    <th> # of Bids </th>
+                                    <th> Actions </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="product : ${products}">
+                                    <td><span th:text="${product.productId}"> Product ID </span></td>
+                                    <td><span th:text="${product.productName}"> Product Name </span></td>
+                                    <td><span th:text="${product.getAuction().getBeginDate()}"> Begin Date </span></td>
+                                    <td><span th:text="${product.getAuction().getEndDate()}"> End Date </span></td>
+                                    <td><span th:text="${product.productPrice}"> Price </span> </td>
+                                    <td><span th:text="${product.getAuction().getBeginPrice()}"> Begin Price </span></td>
+                                    <td><span th:text="${productMaps.get(product.productId)}" > Number Of Bids </span></td>
+                                    <td>
+                                        <a class="edit" th:if="${product.getProductState() != 'SAVE_AND_RELEASE'} and ${productMaps.get(product.productId)}==0" th:href="@{/product/edit/{productId}(productId=${product.productId})}">
+                                            <i class="material-icons" data-toggle="tooltip"
+                                               title="Edit">&#xE254;</i></a>
+                                        <a class="delete" th:if="${product.getProductState() != 'SAVE_AND_RELEASE'} and ${productMaps.get(product.productId)}==0" th:href="@{/product/delete/{productId}(productId=${product.productId})}">
+                                            <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                        <a class="edit" th:if="${product.getProductState() == 'SAVE_AND_RELEASE'} or ${productMaps.get(product.productId)}>0" th:href="@{/product/edit/{productId}(productId=${product.productId})}">
+                                            <i class="material-icons" data-toggle="tooltip" title="View">visibility</i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>

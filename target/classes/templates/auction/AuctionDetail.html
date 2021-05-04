@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Neptune Auction System - Auction Detail</title>
+    <link rel = "icon" th:href="@{/images/neptune.ico}">
+</head>
+<body>
+<section>
+    <a href="/">Back to Home</a>
+</section>
+<th:block th:insert="fragments/head_crud"></th:block>
+<div class="sb-nav-fixed">
+    <th:block th:insert="fragments/navbar :: navbar"></th:block>
+    <div id="layoutSidenav">
+        <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid" th:object="${auction}">
+                    <h1 class="mt-4">Auction Detail</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a th:href="${'/auction/activeAuctions'}">Active Auctions</a></li>
+                        <li class="breadcrumb-item active" th:text="'Auction ' + *{auctionId}">Auction Detail</li>
+                    </ol>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header" th:text="'Product ' + *{product.getProductName()}">Product</div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="carousel slide" data-ride="carousel" id="carouselExampleControls">
+                                            <div class="carousel-inner">
+                                                <th:block th:each="image : *{product.getDbImages()}">
+                                                    <div class="carousel-item" th:attr="class=${imageStat.index == 0 ? 'carousel-item active' : 'carousel-item'}">
+                                                        <img class="d-block w-100" th:src="@{'/ProductImages/' + ${image.name}}"/>
+                                                    </div>
+                                                </th:block>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">Product Id</div>
+                                        <div class="col-sm-7" th:text="*{product.getProductId()}"></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">Product Name</div>
+                                        <div class="col-sm-7" th:text="*{product.getProductName()}"></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">Description</div>
+                                        <div class="col-sm-7 text-wrap" style="width: 6rem;" th:text="*{product.getProductDescription()}"></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">Tags:</div>
+                                        <div class="col-sm-7 text-wrap" style="width: 6rem;"th:each=" tag : *{product.getCategories()}">
+                                            <a th:href="@{'/customer/category/products?id=' + ${tag.categoryId}}"><span th:text="${tag.getCategoryName()}">Category</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <div class="card">
+                                <div class="card-header">Auction Detail</div>
+                                <div class="card-body">
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">Start date</div>
+                                        <div class="col-sm-7"><span th:text="*{{beginDate}}"> Start Date </span></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">End date</div>
+                                        <div class="col-sm-7"><span th:text="*{{endDate}}"> End Date </span></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">Current price</div>
+                                        <div class="col-sm-7"><span th:text="${#numbers.formatCurrency(highestBid)}"> Current Price </span></div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-3">Deposit Amount</div>
+                                        <div class="col-sm-7"><span th:text="${#numbers.formatCurrency(auction.depositAmount)}"> Deposit Amount </span></div>
+                                    </div>
+                                    <th:block th:if="${!auction.isEnded()}">
+                                        <div th:if="${isDeposited && !isSeller}">
+                                            <div th:if="${isUserVerified}">
+                                                <form action="#" th:action="@{/auction/bidding}" method="post">
+                                                    <div class="row form-group">
+                                                        <input type="hidden" name="auctionId" th:value="*{auctionId}">
+                                                        <div class="col-sm-3">
+                                                            <label for="amount">Bidding Amount</label>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <input id="amount" type="number" name="amount" placeholder="Enter your bid">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input class="btn btn-success" id="submit" type="submit" tabindex="5" value="Bid">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row"><span th:text="${error}" style="color: red;">ID</span></div>
+                                                </form>
+                                            </div>
+                                            <div th:if="${!isUserVerified}">
+                                                <span style="color: red;">Your account must be verified to bid.</span>
+                                            </div>
+                                        </div>
+                                        <div th:unless="${isDeposited || isSeller}">
+                                            <form action="#" th:action="@{/auction/deposit}" method="get">
+                                                <input type="hidden" name="auctionId" th:value="*{auctionId}">
+                                                <div class="row form-group">
+                                                    <div class="col-sm-10" style="color: red;">
+                                                        <h4>Deposit is needed before joining this auction.</h4>
+                                                    </div>
+                                                </div>
+                                                <div class="row justify-content-center">
+                                                    <div class="col-sm-7">
+                                                        <input class="btn btn-success" id="pay" type="submit" tabindex="5" value="Review Deposit">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:if="${auction.isEnded()}">
+                                        <div class="row form-group">
+                                            <div class="col-sm-10" style="color: red;">
+                                                <h4>This auction is ended.</h4>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card">
+                                <div class="card-header">Bidding History</div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th style="width:10%" scope="col">#</th>
+                                            <th style="width:30%" scope="col">Bidder</th>
+                                            <th style="width:20%" scope="col">Amount</th>
+                                            <th style="width:40%" scope="col">Time</th>
+                                        </tr>
+                                        <tr th:each="bid: ${auction.bids}">
+                                            <th scope="row" th:text="${bidStat.index+1}"/>
+                                            <td th:text="${bid.bidder.firstName}+' '+${bid.bidder.lastName}" />
+                                            <td th:text="${bid.biddingAmount}" />
+                                            <td th:text="${#temporals.format(bid.biddingTime, 'yyyy-MM-dd HH:mm:ss')}" />
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+            <th:block th:insert="fragments/footer :: footer"></th:block>
+        </div>
+    </div>
+    <th:block th:insert="fragments/scripts"></th:block>
+</div>
+</body>
+</html>

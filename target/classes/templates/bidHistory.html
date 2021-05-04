@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<title>Neptune Auction System</title>
+<link rel = "icon" th:href="@{/images/neptune.ico}">
+<th:block th:insert="fragments/head_crud"></th:block>
+<body class="sb-nav-fixed">
+<th:block th:insert="fragments/navbar :: navbar"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="fragments/sidenav :: sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <h3>Bid History: <span th:text="${auction.product.productName}">error</span></h3>
+
+            <table class="table">
+                <tr>
+                    <th style="width:10%" scope="col">#</th>
+                    <th style="width:30%" scope="col">Bidder</th>
+                    <th style="width:20%" scope="col">Bid Amount $</th>
+                    <th style="width:40%" scope="col">Bid Time</th>
+                </tr>
+                <tr th:each="bid: ${auction.bids}">
+                    <th scope="row" th:text="${bidStat.index+1}"/>
+                    <td th:text="${bid.bidder.firstName}+' '+${bid.bidder.lastName}" />
+                    <td th:text="${bid.biddingAmount}" />
+                    <td th:text="${#temporals.format(bid.biddingTime, 'yyyy-MM-dd HH:mm:ss')}" />
+                </tr>
+            </table>
+            <a href="/auction" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Back</a>
+
+        </main>
+        <th:block th:insert="fragments/footer :: footer"></th:block>
+    </div>
+</div>
+<th:block th:insert="fragments/scripts"></th:block>
+</body>
+</html>
